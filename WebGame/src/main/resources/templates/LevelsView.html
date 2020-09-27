@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Application</title>
+</head>
+<body>
+    <div>
+        This is levels view.
+        <table>
+            <tr th:each="level : ${levels}">
+                <td th:text="${level.lvlId}">1</td>
+                <td th:text="${level.x}">2</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
