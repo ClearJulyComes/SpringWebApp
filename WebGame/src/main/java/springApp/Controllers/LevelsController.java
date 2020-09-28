@@ -1,6 +1,8 @@
 package springApp.Controllers;
 
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +25,9 @@ public class LevelsController {
     }
 
     @PostMapping("/save")
-    public String saveLevel(@RequestBody LevelData levelData) {
+    public String saveLevel(@ModelAttribute("newLevel") LevelData levelData) {
+        log.info("Look: " + levelData);
         levelRepository.save(levelData);
-        return "redirect:/";
+        return "redirect:/levels";
     }
 }

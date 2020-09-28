@@ -7,5 +7,4 @@ import springApp.Models.LevelData;
 @Repository
 public interface LevelRepository extends CrudRepository<LevelData, Integer> {
 
-    ;
 }

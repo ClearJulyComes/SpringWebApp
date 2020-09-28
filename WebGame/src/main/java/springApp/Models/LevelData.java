@@ -1,23 +1,28 @@
 package springApp.Models;
 
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
-@RequiredArgsConstructor
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
 public class LevelData {
 
     @Id
-    private final int lvlId;
-    @NotNull
-    private final String x;
+    private int lvlId;
+    @Lob
+    private String coords;
 
+    /*@OneToMany(mappedBy = "lvl", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<Coords> userInfo = new HashSet<Coords>(); */
+
+    public LevelData() {
+    }
+
+    public LevelData(int lvlId, String coords) {
+        this.lvlId = lvlId;
+        this.coords = coords;
+    }
 }
