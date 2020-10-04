@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <script src="static/js/jquery-3.5.1.js"></script>
-    <title>Login</title>
+    <title>Admin</title>
 </head>
 <body>
-    <div>Welcome to hello page.</div>
+    <div>Welcome to admin page.</div>
     <form id="myForm" action="#" th:action="@{/levels/save}" th:object="${newLevel}" method="post">
     <label for="lvlNum">Lvl№ </label>
     <input name="lvl" id="lvlNum" th:field="*{lvlId}">
     <textarea name="coordsta" id="coordinates" th:field="*{coords}"></textarea>
     </form>
-    <canvas id="canvas" style="display: block; position: absolute" width="400" height="400" >
+    <canvas id="canvas" style="display: block; position: absolute; border: 1px solid black;" width="400" height="400" >
         Your browser is not supported canvas.
     </canvas>
     <script th:inline="javascript">
@@ -113,25 +113,6 @@
             var ta = document.getElementById('coordinates');
             ta.value = JSON.stringify(coords);
             document.forms["myForm"].submit();
-            /*let myData = {
-                lvlId : document.getElementById('lvlNum').value,
-                coords : coords
-            };
-            coords = [];
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", "/levels/save");
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify(myData));
-            xhr.onreadystatechange = function() { // (3)
-                if (xhr.readyState !== 4) return;
-
-                if (xhr.status !== 200) {
-                    alert(xhr.responseText);
-                } else {
-                    location.href = "/levels"
-                }
-
-            } */
         }
         function clear(){
             ctx.fillStyle = 'white';

@@ -2,8 +2,8 @@ package springApp.Repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import springApp.Models.LevelData;
+import springApp.Models.UserLevels;
 
 @Repository
-public interface LevelRepository extends CrudRepository<LevelData, Integer> {
+public interface UserLevelsRepository extends CrudRepository<UserLevels, Long> {
 }
