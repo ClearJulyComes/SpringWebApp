@@ -3,14 +3,18 @@ package springApp.Controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import springApp.Models.LevelData;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller("/")
+@Controller
+@RequestMapping("/")
 public class LoginController {
 
+    @GetMapping("/login")
+    public String getLoginView(){
+        return "login";
+    }
     @GetMapping
-    public String index(Model model){
-        model.addAttribute("newLevel", new LevelData());
-        return "LoginView";
+    public String getLevelsView(){
+        return "LevelsView";
     }
 }

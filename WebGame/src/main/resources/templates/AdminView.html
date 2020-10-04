@@ -7,6 +7,9 @@
     <title>Admin</title>
 </head>
 <body>
+    <form method="POST" th:action="@{/logout}">
+        <input type="submit" value="Logout"/>
+    </form>
     <div>Welcome to admin page.</div>
     <form id="myForm" action="#" th:action="@{/levels/save}" th:object="${newLevel}" method="post">
     <label for="lvlNum">Lvl№ </label>

@@ -1,0 +1,59 @@
+package springApp.security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Qualifier("userRepositoryUserDetailsService")
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsService)
+                    .passwordEncoder(encoder())
+                .and()
+                .inMemoryAuthentication()
+                    .withUser("admin")
+                        .password("$2a$10$RSckBhLOLp86Bst5F4GG0uY7bdoHy0BAKXsEFYKlJM2rFMnTtYdF2")
+                        .authorities("ROLE_ADMIN", "ROLE_USER")
+        ;
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                    .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
+                    .antMatchers("/levels", "/").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+                    .antMatchers("/register", "/login").access("permitAll")
+                .and()
+                    .formLogin()
+                        .loginPage("/login")
+                        //.loginProcessingUrl("/authenticate")
+                        .defaultSuccessUrl("/levels")
+                .and()
+                    .logout()
+                        .logoutSuccessUrl("/login")
+
+        ;
+    }
+}
