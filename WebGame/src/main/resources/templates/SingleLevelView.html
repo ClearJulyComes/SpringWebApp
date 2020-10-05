@@ -11,7 +11,7 @@
     Your browser is not supported canvas.
 </canvas>
 <form id="myForm" th:action="@{'/levels/done/'+${levels.lvlId}}" method="post" th:object="${getObj}">
-    <input id="statusDiv" th:field="*{status}">
+    <input id="statusDiv" th:field="*{status}" type="hidden">
 </form>
 <script th:inline="javascript">
     var
@@ -59,11 +59,6 @@
         if(en.clientX === 'm'){
             ctx.beginPath();
             alert("Congrats!");
-            /*let response = fetch("/levels/done/"+[[${levels.lvlId}]], {
-                headers: {
-                    LevelStatus: true
-                }
-            }); */
             var statusDiv = document.getElementById('statusDiv');
             statusDiv.value = true;
             document.forms["myForm"].submit();

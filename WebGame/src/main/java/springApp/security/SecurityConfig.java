@@ -43,17 +43,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
-                    .antMatchers("/levels", "/").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+                    .antMatchers("/levels/**", "/").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
                     .antMatchers("/register", "/login").access("permitAll")
                 .and()
                     .formLogin()
                         .loginPage("/login")
-                        //.loginProcessingUrl("/authenticate")
                         .defaultSuccessUrl("/levels")
                 .and()
                     .logout()
                         .logoutSuccessUrl("/login")
-
         ;
     }
 }

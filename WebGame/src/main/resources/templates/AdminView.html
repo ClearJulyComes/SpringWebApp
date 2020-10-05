@@ -3,7 +3,6 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script src="static/js/jquery-3.5.1.js"></script>
     <title>Admin</title>
 </head>
 <body>
@@ -14,7 +13,7 @@
     <form id="myForm" action="#" th:action="@{/levels/save}" th:object="${newLevel}" method="post">
     <label for="lvlNum">Lvl№ </label>
     <input name="lvl" id="lvlNum" th:field="*{lvlId}">
-    <textarea name="coordsta" id="coordinates" th:field="*{coords}"></textarea>
+    <textarea name="coordsta" id="coordinates" th:field="*{coords}" style="display:none;"></textarea>
     </form>
     <canvas id="canvas" style="display: block; position: absolute; border: 1px solid black;" width="400" height="400" >
         Your browser is not supported canvas.

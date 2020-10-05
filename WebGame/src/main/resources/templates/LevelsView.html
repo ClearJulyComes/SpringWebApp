@@ -13,8 +13,8 @@
         This is levels to start:
         <table>
             <tr th:each="level: ${levels}">
-                <td th:text="${level.lvlId}">Lvl ID</td>
-                <td><button><a th:href="@{'/levels/start/'+${level.lvlId}}">Start</a></button></td>
+                <td th:text="${level}">Lvl ID</td>
+                <td><button><a th:href="@{'/levels/start/'+${level}}">Start</a></button></td>
             </tr>
         </table>
     </div>

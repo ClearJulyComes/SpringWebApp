@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,11 +21,11 @@ public class UserLogin implements UserDetails {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
+    @Column(name = "username", unique = true)
     private String username;
     private String password;
-
-    @OneToMany(mappedBy = "loginLvl", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<UserLevels> userInfo = new HashSet<UserLevels>();
+    @Column(name = "lvl")
+    private int lvl = 1;
 
     public UserLogin(){
 
