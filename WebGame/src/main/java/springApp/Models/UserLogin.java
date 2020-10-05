@@ -1,20 +1,15 @@
 package springApp.Models;
 
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
+@Slf4j
 @Entity
 @Data
 public class UserLogin implements UserDetails {
@@ -26,6 +21,8 @@ public class UserLogin implements UserDetails {
     private String password;
     @Column(name = "lvl")
     private int lvl = 1;
+    @Column(name = "isAdmin")
+    private boolean isAdmin = false;
 
     public UserLogin(){
 
@@ -37,6 +34,11 @@ public class UserLogin implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (isAdmin){
+            log.warn("isAdmin");
+            return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"),
+                    new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 

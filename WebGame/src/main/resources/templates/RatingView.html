@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring</title>
+</head>
+<body>
+<h1>Login</h1>
+<table>
+    <tr th:each="user, iState: ${users}">
+        <td th:text="${iState.index}+1">№</td>
+        <td th:text="${user.getUsername()}">Username</td>
+        <td th:text="${user.getLvl()}">Lvl</td>
+    </tr>
+</table>
+</body>
+</html>

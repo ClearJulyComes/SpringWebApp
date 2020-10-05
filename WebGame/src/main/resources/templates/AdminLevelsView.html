@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Application</title>
+</head>
+<body>
+<div>
+    <table>
+        <tr>
+            <td>
+                <form method="GET" th:action="@{/admin}">
+                    <input type="submit" value="Set lvl"/>
+                </form>
+            </td>
+            <td>
+                <form method="GET" th:action="@{/admin/levels}">
+                    <input type="submit" value="Levels"/>
+                </form>
+            </td>
+            <td>
+                <form method="POST" th:action="@{/logout}">
+                    <input type="submit" value="Logout"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<div>
+    This is levels to start:
+    <table>
+        <tr th:each="level: ${levels}">
+            <td th:text="${level}">Lvl ID</td>
+            <td><button><a th:href="@{'/levels/start/'+${level}}">Start</a></button></td>
+            <td><button><a th:href="@{'/admin/levels/delete/'+${level}}">Delete</a></button></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

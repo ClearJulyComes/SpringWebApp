@@ -12,8 +12,6 @@ import springApp.Models.UserLogin;
 import springApp.Repositories.LevelRepository;
 import springApp.Repositories.UserRepository;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.IntStream;
 
 @Slf4j
@@ -28,10 +26,16 @@ public class LevelsController {
 
     @GetMapping
     public String getLevelsView(Model model, @AuthenticationPrincipal UserLogin user){
+        log.warn("User authorities "+user.getAuthorities().toString());
         int[] lvl = IntStream.range(1, userRepository.findByUsername(user.getUsername()).getLvl()+1).toArray();
-        log.warn("Array "+ userRepository.findByUsername(user.getUsername()).getLvl());
         model.addAttribute("levels", lvl);
         return "LevelsView";
+    }
+
+    @GetMapping("/rating")
+    public String getRatingView(Model model, @AuthenticationPrincipal UserLogin user){
+        model.addAttribute("users", userRepository.findTop10ByOrderByLvlDesc());
+        return "RatingView";
     }
 
     @GetMapping("/start/{lvlId}")
@@ -57,12 +61,5 @@ public class LevelsController {
             return "redirect:/levels/start/"+(id+1);
         }
         return "error";
-    }
-
-    @PostMapping("/save")
-    public String saveLevel(@ModelAttribute("newLevel") LevelData levelData) {
-        log.info("Look: " + levelData);
-        levelRepository.save(levelData);
-        return "redirect:/levels";
     }
 }

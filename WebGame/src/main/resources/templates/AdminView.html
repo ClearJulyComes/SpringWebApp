@@ -6,11 +6,39 @@
     <title>Admin</title>
 </head>
 <body>
-    <form method="POST" th:action="@{/logout}">
-        <input type="submit" value="Logout"/>
-    </form>
+<div>
+    <table>
+        <tr>
+            <td>
+                <form method="GET" th:action="@{/admin}">
+                    <input type="submit" value="Set lvl"/>
+                </form>
+            </td>
+            <td>
+                <form method="GET" th:action="@{/admin/levels}">
+                    <input type="submit" value="Levels"/>
+                </form>
+            </td>
+            <td>
+                <form method="POST" th:action="@{/logout}">
+                    <input type="submit" value="Logout"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
     <div>Welcome to admin page.</div>
-    <form id="myForm" action="#" th:action="@{/levels/save}" th:object="${newLevel}" method="post">
+    <div>
+        <form id="addAdmin" action="#" th:action="@{/admin/add}" th:object="${user}" method="post">
+            <label for="inputAdmin">Make admin: </label>
+            <input name="Admin" id="inputAdmin" th:field="*{login}">
+        </form>
+        <form id="deleteAdmin" action="#" th:action="@{/admin/delete}" th:object="${user}" method="post">
+            <label for="inputDeleteAdmin">Delete admin: </label>
+            <input name="Admin" id="inputDeleteAdmin" th:field="*{login}">
+        </form>
+    </div>
+    <form id="myForm" action="#" th:action="@{/admin/levels/save}" th:object="${newLevel}" method="post">
     <label for="lvlNum">Lvl№ </label>
     <input name="lvl" id="lvlNum" th:field="*{lvlId}">
     <textarea name="coordsta" id="coordinates" th:field="*{coords}" style="display:none;"></textarea>
