@@ -3,9 +3,34 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script type="application/javascript" src="/js/jquery-3.5.1.js"></script>
+    <script type="application/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/css" src="/css/bootstrap.css"></script>
     <title>Title</title>
 </head>
 <body>
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <div class="dropdown-item">
+            <form method="GET" th:action="@{/levels}">
+                <input type="submit" value="Levels"/>
+            </form>
+        </div>
+        <div class="dropdown-item">
+            <form method="GET" th:action="@{/levels/rating}">
+                <input type="submit" value="Rating"/>
+            </form>
+        </div>
+        <div class="dropdown-item">
+            <form method="POST" th:action="@{/logout}">
+                <input type="submit" value="Logout"/>
+            </form>
+        </div>
+    </div>
+</div>
 <div>This is [[${levels.lvlId}]]</div>
 <canvas id="canvas" style="display: block; position: absolute; border: 1px solid black;" width="400" height="400" >
     Your browser is not supported canvas.

@@ -2,10 +2,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script type="application/javascript" src="/js/jquery-3.5.1.js"></script>
+    <script type="application/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/css" src="/css/bootstrap.css"></script>
     <title>Spring</title>
 </head>
 <body>
-<h1>Login</h1>
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <div class="dropdown-item">
+            <form method="GET" th:action="@{/levels}">
+                <input type="submit" value="Levels"/>
+            </form>
+        </div>
+        <div class="dropdown-item">
+            <form method="GET" th:action="@{/levels/rating}">
+                <input type="submit" value="Rating"/>
+            </form>
+        </div>
+        <div class="dropdown-item">
+            <form method="POST" th:action="@{/logout}">
+                <input type="submit" value="Logout"/>
+            </form>
+        </div>
+    </div>
+</div>
 <table>
     <tr th:each="user, iState: ${users}">
         <td th:text="${iState.index}+1">№</td>
