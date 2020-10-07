@@ -3,15 +3,15 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script type="text/javascript" th:src="@{/js/jquery-3.5.1.js}"></script>
-    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
-    <link type="text/css" th:href="@{/css/bootstrap.css}"/>
     <title>Application</title>
+    <script type="text/javascript" th:src="@{/scripts/jquery-3.5.1.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/bootstrap.bundle.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
 <body>
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
+            Menu
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
             <div class="dropdown-item">
@@ -36,7 +36,11 @@
         <table>
             <tr th:each="level: ${levels}">
                 <td th:text="${level}">Lvl ID</td>
-                <td><button><a th:href="@{'/levels/start/'+${level}}">Start</a></button></td>
+                <td>
+                    <form method="GET" th:action="@{'/levels/start/'+${level}}">
+                        <input type="submit" value="Start"/>
+                    </form>
+                </td>
             </tr>
         </table>
     </div>

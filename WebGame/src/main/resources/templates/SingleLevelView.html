@@ -3,15 +3,15 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script type="application/javascript" src="/js/jquery-3.5.1.js"></script>
-    <script type="application/javascript" src="/js/bootstrap.js"></script>
-    <script type="text/css" src="/css/bootstrap.css"></script>
     <title>Title</title>
+    <script type="text/javascript" th:src="@{/scripts/jquery-3.5.1.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/bootstrap.bundle.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
 <body>
 <div class="dropdown">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown
+        Menu
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <div class="dropdown-item">
@@ -31,13 +31,19 @@
         </div>
     </div>
 </div>
-<div>This is [[${levels.lvlId}]]</div>
+<div class="container justify-content-md-center">
+<div>This is [[${levels.lvlId}]] lvl</div>
+    <div>
+        <input type="button" onclick="showReplay()" value="Show"/>
+        <input type="button" onclick="startGame()" value="Start"/>
+    </div>
 <canvas id="canvas" style="display: block; position: absolute; border: 1px solid black;" width="400" height="400" >
     Your browser is not supported canvas.
 </canvas>
 <form id="myForm" th:action="@{'/levels/done/'+${levels.lvlId}}" method="post" th:object="${getObj}">
     <input id="statusDiv" th:field="*{status}" type="hidden">
 </form>
+</div>
 <script th:inline="javascript">
     var
         canv = document.getElementById('canvas'),
@@ -46,6 +52,9 @@
         isPlaying = false,
         savedCoords = [],
         coords = [];
+    /*<![CDATA[*/
+    var stringCoords = [[${levels.coords}]];
+    /*]]>*/
     canv.width = 400;
     canv.height = 400;
 
@@ -155,24 +164,17 @@
                 ctx.moveTo(e.clientX, e.clientY);
             }, 30);
     }
-    document.addEventListener('keydown', function (e) {
-        /*<![CDATA[*/
-        var string = [[${levels.coords}]];
-        /*]]>*/
-        if(e.key === 'c'){
-            clear();
-        }else if (e.key === 'r'){
-            console.log(string + " heyyyyyyyyyyy");
-            savedCoords = JSON.parse(string);
-            clear();
-            replay(string);
-        }else if(e.key === 'p'){
-            savedCoords = JSON.parse(string);
-            console.log("Length is "+savedCoords.length);
-            clear();
-            isPlaying = true;
-        }
-    })
+    function showReplay(){
+        savedCoords = JSON.parse(stringCoords);
+        clear();
+        replay(stringCoords);
+    }
+    function startGame(){
+        savedCoords = JSON.parse(stringCoords);
+        console.log("Length is "+savedCoords.length);
+        clear();
+        isPlaying = true;
+    }
 </script>
 </body>
 </html>

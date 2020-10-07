@@ -2,15 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script type="application/javascript" src="/js/jquery-3.5.1.js"></script>
-    <script type="application/javascript" src="/js/bootstrap.js"></script>
-    <script type="text/css" src="/css/bootstrap.css"></script>
     <title>Spring</title>
+    <script type="text/javascript" th:src="@{/scripts/jquery-3.5.1.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/bootstrap.bundle.js}"></script>
+    <link type="text/css"  rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
 </head>
 <body>
 <div class="dropdown">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown
+        Menu
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <div class="dropdown-item">
@@ -31,6 +31,11 @@
     </div>
 </div>
 <table>
+    <tr>
+        <td>№</td>
+        <td>Username</td>
+        <td>lvl</td>
+    </tr>
     <tr th:each="user, iState: ${users}">
         <td th:text="${iState.index}+1">№</td>
         <td th:text="${user.getUsername()}">Username</td>

@@ -54,11 +54,15 @@ public class LevelsController {
     @PostMapping("/done/{lvlId}")
     public String setLevelDone(@ModelAttribute("getObj") GetObj getObj, @PathVariable(value="lvlId") final
             Integer id, Model model, @AuthenticationPrincipal UserLogin user){
+        UserLogin userLogin = userRepository.findByUsername(user.getUsername());
         if (getObj.isStatus()){
-            UserLogin userLogin = userRepository.findByUsername(user.getUsername());
-            userLogin.setLvl(userLogin.getLvl()+1);
-            userRepository.save(userLogin);
-            return "redirect:/levels/start/"+(id+1);
+            log.warn("Log " + id + " and " + userLogin.getLvl());
+            if(id==userLogin.getLvl()){
+                log.warn("Log equal " + id + " and " + userLogin.getLvl());
+                userLogin.setLvl(userLogin.getLvl() + 1);
+                userRepository.save(userLogin);
+            }
+            return "redirect:/levels/start/" + (id + 1);
         }
         return "error";
     }
