@@ -5,16 +5,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import springApp.Repositories.UserRepository;
+import springApp.Services.UserService;
 
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
+
     private PasswordEncoder passwordEncoder;
-    private UserRepository userRepo;
+    private UserService userService;
+
     public RegistrationController(
-            UserRepository userRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
+            UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
     @GetMapping
@@ -24,7 +26,7 @@ public class RegistrationController {
 
     @PostMapping
     public String processRegistration(RegistrationForm form) {
-        userRepo.save(form.toUserLogin(passwordEncoder));
+        userService.registerNewUser(form.toUserLogin(passwordEncoder));
         return "redirect:/login";
     }
 }

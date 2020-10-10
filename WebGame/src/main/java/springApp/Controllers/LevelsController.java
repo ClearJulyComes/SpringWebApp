@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import springApp.Models.GetObj;
 import springApp.Models.LevelData;
 import springApp.Models.UserLogin;
-import springApp.Repositories.LevelRepository;
-import springApp.Repositories.UserRepository;
-
-import java.util.stream.IntStream;
+import springApp.Services.LevelService;
+import springApp.Services.UserService;
 
 @Slf4j
 @Controller
@@ -20,30 +18,27 @@ import java.util.stream.IntStream;
 public class LevelsController {
 
     @Autowired
-    private LevelRepository levelRepository;
+    private LevelService levelService;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping
     public String getLevelsView(Model model, @AuthenticationPrincipal UserLogin user){
-        log.warn("User authorities "+user.getAuthorities().toString());
-        int[] lvl = IntStream.range(1, userRepository.findByUsername(user.getUsername()).getLvl()+1).toArray();
-        model.addAttribute("levels", lvl);
+        model.addAttribute("levels", userService.getUserLevels(user.getUsername()));
         return "LevelsView";
     }
 
     @GetMapping("/rating")
-    public String getRatingView(Model model, @AuthenticationPrincipal UserLogin user){
-        model.addAttribute("users", userRepository.findTop10ByOrderByLvlDesc());
+    public String getRatingView(Model model){
+        model.addAttribute("users", userService.getTop10());
         return "RatingView";
     }
 
     @GetMapping("/start/{lvlId}")
     public String getLevelsView(@PathVariable(value="lvlId") final Integer id, Model model,
                                 @AuthenticationPrincipal UserLogin user){
-        log.info(levelRepository.findById(id) + " Ty");
-        if(userRepository.findByUsername(user.getUsername()).getLvl()>=id) {
-            LevelData levelData = levelRepository.findById(id).orElse(new LevelData());
+        if(userService.checkLevelAccess(user.getUsername(), id)) {
+            LevelData levelData = levelService.getLevelData(id);
             model.addAttribute("levels", levelData);
             model.addAttribute("getObj", new GetObj());
             return "SingleLevelView";
@@ -53,15 +48,9 @@ public class LevelsController {
 
     @PostMapping("/done/{lvlId}")
     public String setLevelDone(@ModelAttribute("getObj") GetObj getObj, @PathVariable(value="lvlId") final
-            Integer id, Model model, @AuthenticationPrincipal UserLogin user){
-        UserLogin userLogin = userRepository.findByUsername(user.getUsername());
+            Integer id, @AuthenticationPrincipal UserLogin user){
         if (getObj.isStatus()){
-            log.warn("Log " + id + " and " + userLogin.getLvl());
-            if(id==userLogin.getLvl()){
-                log.warn("Log equal " + id + " and " + userLogin.getLvl());
-                userLogin.setLvl(userLogin.getLvl() + 1);
-                userRepository.save(userLogin);
-            }
+            userService.setFinishedLevel(user.getUsername(), id);
             return "redirect:/levels/start/" + (id + 1);
         }
         return "error";

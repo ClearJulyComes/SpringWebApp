@@ -2,17 +2,13 @@ package springApp.Controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import springApp.Models.GetObj;
 import springApp.Models.LevelData;
-import springApp.Models.UserLogin;
-import springApp.Repositories.LevelRepository;
-import springApp.Repositories.UserRepository;
-
-import java.util.stream.IntStream;
+import springApp.Services.LevelService;
+import springApp.Services.UserService;
 
 @Slf4j
 @Controller
@@ -20,9 +16,9 @@ import java.util.stream.IntStream;
 public class AdminController {
 
     @Autowired
-    private LevelRepository levelRepository;
+    private UserService userService;
     @Autowired
-    private UserRepository userRepository;
+    private LevelService levelService;
 
     @GetMapping
     public String showAdminView(Model model){
@@ -34,38 +30,35 @@ public class AdminController {
     @PostMapping("/add")
     public String addAdmin(@ModelAttribute("getObj") GetObj getObj){
         String user = getObj.getLogin();
-        UserLogin userLogin = userRepository.findByUsername(user);
-        userLogin.setAdmin(true);
-        userRepository.save(userLogin);
+        if (!userService.addOrDeleteAdmin(user, true)) {
+            log.warn("Error with saving with admin role.");
+        }
         return "redirect:/admin";
     }
 
     @PostMapping("/delete")
     public String deleteAdmin(@RequestBody String user){
-        UserLogin userLogin = userRepository.findByUsername(user);
-        userLogin.setAdmin(false);
-        userRepository.save(userLogin);
+        if (!userService.addOrDeleteAdmin(user, false)) {
+            log.warn("Error with deleting with admin role.");
+        }
         return "redirect:/admin";
     }
 
     @GetMapping("/levels")
-    public String getAdminLevelsView(Model model, @AuthenticationPrincipal UserLogin user){
-        int[] lvl = IntStream.range(1, levelRepository.findFirstByOrderByLvlIdDesc().getLvlId()+1).toArray();
-        model.addAttribute("levels", lvl);
-        log.warn("Return");
+    public String getAdminLevelsView(Model model){
+        model.addAttribute("levels", levelService.getAllLevels());
         return "AdminLevelsView";
     }
 
     @GetMapping("/levels/delete/{lvlId}")
-    public String deleteLevel(@PathVariable(value="lvlId") final Integer id, Model model){
-        levelRepository.delete(levelRepository.findById(id).orElse(new LevelData()));
+    public String deleteLevel(@PathVariable(value="lvlId") final Integer id){
+        levelService.deleteLevel(id);
         return "redirect:/admin/levels";
     }
 
     @PostMapping("/levels/save")
     public String saveLevel(@ModelAttribute("newLevel") LevelData levelData) {
-        log.info("Look: " + levelData);
-        levelRepository.save(levelData);
+        levelService.saveLevel(levelData);
         return "redirect:/admin/levels";
     }
 }
