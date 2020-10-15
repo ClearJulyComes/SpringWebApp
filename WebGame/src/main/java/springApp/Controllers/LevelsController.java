@@ -17,10 +17,14 @@ import springApp.Services.UserService;
 @RequestMapping("/levels")
 public class LevelsController {
 
+    private final LevelService levelService;
+    private final UserService userService;
+
     @Autowired
-    private LevelService levelService;
-    @Autowired
-    private UserService userService;
+    public LevelsController(LevelService levelService, UserService userService){
+        this.levelService = levelService;
+        this.userService = userService;
+    }
 
     @GetMapping
     public String getLevelsView(Model model, @AuthenticationPrincipal UserLogin user){

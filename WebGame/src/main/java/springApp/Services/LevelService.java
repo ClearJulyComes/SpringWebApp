@@ -9,8 +9,12 @@ import java.util.stream.IntStream;
 
 @Service
 public class LevelService {
+    private final LevelRepository levelRepository;
+
     @Autowired
-    private LevelRepository levelRepository;
+    public LevelService(LevelRepository levelRepository){
+        this.levelRepository = levelRepository;
+    }
 
     public int[] getAllLevels(){
         return IntStream.rangeClosed(1, levelRepository.findFirstByOrderByLvlIdDesc().getLvlId()).toArray();

@@ -15,10 +15,14 @@ import springApp.Services.UserService;
 @RequestMapping("/admin")
 public class AdminController {
 
+    private final UserService userService;
+    private final LevelService levelService;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private LevelService levelService;
+    public AdminController(UserService userService, LevelService levelService){
+        this.levelService = levelService;
+        this.userService = userService;
+    }
 
     @GetMapping
     public String showAdminView(Model model){

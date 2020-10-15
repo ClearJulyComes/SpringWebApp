@@ -10,8 +10,12 @@ import java.util.stream.IntStream;
 @Service
 public class UserService {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
     public boolean addOrDeleteAdmin(String username, boolean status){
         try {
